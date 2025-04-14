@@ -27,10 +27,11 @@ def process_file(uploaded_file):
 
 def autostat_fcl():
     container = st.container(border=True)
-    container.title("FCL AUTOSTAT")
+    container.subheader("FCL AUTOSTAT")
+    container.write("UPLOAD YOUR EXCEL FILE HERE")
 
     # Uploader
-    uploaded_file = container.file_uploader("Upload your Excel file", type=["xlsx"])
+    uploaded_file = container.file_uploader("Choose a file", type=["xlsx"])
     
     if uploaded_file is not None:
         df = process_file(uploaded_file)
