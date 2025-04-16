@@ -71,21 +71,26 @@ def pif_legal_mapping():
             if "ENDORSEDATE" in df.columns:
                 df["ENDORSEDATE"] = pd.to_datetime(df["ENDORSEDATE"]).dt.strftime("%m/%d/%Y")
             if "PULLOUT DATE" in df.columns:
-                df["PULLOUT DATE"] = pd.to_datetime(df["PULLOUT DATE"]).dt.strftime("%m/%d/%Y %H:%M")
+                df["PULLOUT DATE"] = pd.to_datetime(df["PULLOUT DATE"]).dt.strftime("%m/%d/%Y")
 
         except Exception as e:
             container.error(f"Error reading Excel file: {e}")
         else:
             new_data = {}
+            missing_columns = []
             for m in mapping:
                 if m["additional"]:
-                    new_data[m["alias"]] = ""
+                    new_data[m["alias"]] = ""   
                 else:
                     if m["source"] in df.columns:
                         new_data[m["alias"]] = df[m["source"]]
                     else:
                         container.warning(f"Column '{m['source']}' not found. Filling '{m['alias']}' with empty values.")
                         new_data[m["alias"]] = ""
+            if missing_columns:
+                missing_columns = list(set(missing_columns))  # Remove duplicates
+                container.warning(f"The following required columns were not found: {', '.join(missing_columns)}")
+            
             mapped_df = pd.DataFrame(new_data)
 
             container.subheader("Mapped Data")

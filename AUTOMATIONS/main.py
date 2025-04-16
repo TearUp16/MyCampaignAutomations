@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Download this first:
-# pip install streamlit openpyxl xlsxwriter 
+# pip install streamlit openpyxl xlsxwriter xlrd>=2.0.1 numpy
 
 st.set_page_config(
     page_title="Campaign Automations",
@@ -14,4 +14,4 @@ pages = {"PAGES": [
     ],}
 
 pg = st.navigation(pages)
-pg.run()
+pg.run() 

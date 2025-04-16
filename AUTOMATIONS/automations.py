@@ -68,17 +68,19 @@ elif selected_campaign == "SBC HOMELOAN":
 
 # SBC INSURANCE
 elif selected_campaign == "SBC INSURANCE":
-    tab1, tab2, tab3 = st.tabs(["ENDORSEMENT", "PULLOUTS", "PTP"])
+    tab7, tab8, tab9 = st.tabs(["ENDORSEMENT", "PULLOUTS", "PTP"])
 
-    with tab1:
+    with tab7:
         if selected_campaign == "SBC INSURANCE":
             st.title("COMING SOON")
-    with tab2:
-        st.title("COMING SOON")
-    with tab3:
-        st.title("COMING SOON")
+    with tab8:
+        st.title("PULLOUTS")
+    with tab9:
+        st.title("PTP")
 
 # SBF HOMELOAN
 elif selected_campaign == "SBF HOMELOAN":
+    tab10, tab11, tab12 = st.tabs(["ENDORSEMENTS","PULLOUTS","PTP"])
     st.title("SBF HOMELOAN AUTOMATIONS")
     st.write("COMING SOON")
+
