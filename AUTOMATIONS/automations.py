@@ -20,7 +20,7 @@ if selected_campaign == "FCL":
     with tab1:
         if selected_campaign == "FCL":
             st.title("ENDORSEMENT")
-            fcl_page = st.selectbox(
+            fcl_page = st.sidebar.selectbox(
                 "SELECT AUTOMATION",
                 [
                     "FOR INPUT DATA IN FCL DRIVE",

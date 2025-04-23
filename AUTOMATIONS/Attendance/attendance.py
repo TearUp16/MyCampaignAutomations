@@ -14,26 +14,11 @@ def load_attendance_data():
 def save_attendance_data(df):
     df.to_csv("attendance_sheet.csv", index=False)
 
-# Function to reset the attendance data
-def reset_attendance_data():
-    if os.path.exists("attendance_sheet.csv"):
-        os.remove("attendance_sheet.csv")
-    return pd.DataFrame(columns=["DATE", "NAME OF AGENT", "POSITION", "STATUS", "TYPE OF ABSENT", "TIME", "OT TIME"])
-
 # Streamlit UI
 st.title("SBC INSURANCE ATTENDANCE")
 
-# Button to reset the data
-reset_button = st.button("Reset")
-
-# Reset the data if button is pressed
-if reset_button:
-    attendance_df = reset_attendance_data()
-    st.success("Attendance data has been reset!")
-
-else:
-    # Load existing attendance data if available
-    attendance_df = load_attendance_data()
+# Load existing attendance data if available
+attendance_df = load_attendance_data()
 
 # Get today's date using datetime module
 today_date = datetime.today().date()
@@ -43,7 +28,7 @@ with st.form(key="attendance_form"):
     # Display today's date in a non-editable field (read-only)
     st.subheader(f"**Date**: {today_date}")  # Displaying today's date as text, not editable
     
-    name_of_agent = st.text_input("Name of Agent")
+    name_of_agent = st.text_input("Name")
     position = st.selectbox("Position", ["Agent", "TL", "MIS", "Field"])
     status = st.selectbox("Status (Present/Absent)", ["Present", "Absent"])
     type_of_absent = st.selectbox("Type of Absence (Leave blank if none)", ["","SL", "VL", "EL"])
@@ -72,16 +57,39 @@ with st.form(key="attendance_form"):
 
             st.success("Attendance has been recorded successfully!")
 
-# Display the updated attendance sheet
-st.subheader("Attendance Sheet")
-st.dataframe(attendance_df)
+# Date filter to select a specific date
+date_filter = st.date_input("Select a date to filter", today_date)
 
-file_name = f"Attendace {today_date}.csv"
+# Display the filtered attendance sheet
+st.subheader("Attendance Sheet " + str(date_filter))
 
-# Option to download the updated attendance sheet
+# Filter the attendance data based on the selected date
+filtered_df = attendance_df[attendance_df["DATE"] == str(date_filter)]
+
+# Reset the index to avoid out-of-bounds errors
+filtered_df = filtered_df.reset_index(drop=True)
+
+# Option to delete a row from the filtered data
+rows_to_delete = st.multiselect("Select rows to delete", options=filtered_df.index.tolist(), format_func=lambda x: f"Entry {x+1}: {filtered_df.iloc[x]['NAME OF AGENT']} - {filtered_df.iloc[x]['POSITION']}")
+
+# Confirm delete button
+if rows_to_delete:
+    confirm_delete_button = st.button("Confirm Delete")
+    
+    if confirm_delete_button:
+        # Delete selected rows and reset the index
+        filtered_df = filtered_df.drop(rows_to_delete).reset_index(drop=True)
+        save_attendance_data(filtered_df)  # Save the updated data
+        st.success(f"Deleted selected entries: {', '.join(str(row + 1) for row in rows_to_delete)}")
+
+# Display the updated filtered attendance sheet
+st.dataframe(filtered_df)
+
+# Option to download the filtered attendance sheet
+file_name = f"Filtered_Attendance_{date_filter}.csv"
 st.download_button(
-    label="Download Attendace",
-    data=attendance_df.to_csv(index=False),
+    label="Download Filtered Attendance",
+    data=filtered_df.to_csv(index=False),
     file_name=file_name,
     mime="text/csv",
 )
