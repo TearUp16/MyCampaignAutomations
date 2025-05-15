@@ -24,7 +24,7 @@ def fcl_drive_for_input():
     container.subheader("FOR INPUT DATA IN FCL DRIVE")
     container.write("UPLOAD YOUR 'BCRM UPLOAD' FILE HERE")
 
-    uploaded_file = container.file_uploader("Choose a file", type=["xls", "xlsx"])
+    uploaded_file = container.file_uploader("Choose a file", type=["xls", "xlsx"], key="file_uploader")
 
     if uploaded_file:
         try:

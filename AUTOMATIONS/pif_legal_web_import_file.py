@@ -3,8 +3,8 @@ import streamlit as st
 from datetime import datetime
 
 def pif_legal_website_import_file():
-    def clean_data(uploaded_file):
-        df = pd.read_excel(uploaded_file)
+    def clean_data(uploaded_file3):
+        df = pd.read_excel(uploaded_file3)
         df['CH_CODE'] = df['Ch Code']
 
         def add_columns(row):
@@ -28,10 +28,10 @@ def pif_legal_website_import_file():
     container.subheader("PIF LEGAL WEBSITE IMPORT FILE")
     container.write("UPLOAD YOUR 'BCRM UPLOAD' FILE HERE")
 
-    uploaded_file = container.file_uploader("Choose a file", type=["xls", "xlsx"])
+    uploaded_file3 = container.file_uploader("Choose a file", type=["xls", "xlsx"], key="file_uploader3")
 
-    if uploaded_file is not None:
-        cleaned_df = clean_data(uploaded_file)
+    if uploaded_file3 is not None:
+        cleaned_df = clean_data(uploaded_file3)
 
         container.write("Cleaned Data Preview:")
         container.dataframe(cleaned_df)

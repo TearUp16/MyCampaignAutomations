@@ -6,7 +6,7 @@ import os
 COLUMNS_TO_COPY = [
     "HlidNo",
     "LastName, FirstName MidName",
-    "Branch",
+    "BRANCH",
     "ENDO DATE"
 ]
 def fcl_2nd_drive_for_input():
@@ -14,15 +14,15 @@ def fcl_2nd_drive_for_input():
     container.subheader("FOR INPUT DATA IN FCL 2ND DRIVE")
     container.write("UPLOAD YOUR 'BCRM UPLOAD' FILE HERE")
 
-    uploaded_file = container.file_uploader("Choose a file", type=["xls", "xlsx"])
+    uploaded_file1 = container.file_uploader("Choose a file", type=["xls", "xlsx"], key="file_uploader1")
 
-    if uploaded_file:
+    if uploaded_file1:
         try:
-            file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+            file_extension = os.path.splitext(uploaded_file1.name)[1].lower()
             if file_extension == ".xls":
-                df = pd.read_excel(uploaded_file, engine="xlrd", index_col=False)
+                df = pd.read_excel(uploaded_file1, engine="xlrd", index_col=False)
             else:
-                df = pd.read_excel(uploaded_file, index_col=False)
+                df = pd.read_excel(uploaded_file1, index_col=False)
 
             if "HlidNo" in df.columns:
                 df["HlidNo"] = df["HlidNo"].astype(str)

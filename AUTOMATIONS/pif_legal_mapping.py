@@ -52,17 +52,17 @@ def pif_legal_mapping():
     container.subheader("PIF LEGAL MAPPING")
     container.write("UPLOAD YOUR 'DATABASE' SHEET VALUES HERE")
 
-    uploaded_file = container.file_uploader("Choose a file", type=["xls", "xlsx", "xlsm"])
+    uploaded_file2 = container.file_uploader("Choose a file", type=["xls", "xlsx", "xlsm"], key="file_uploader2")
 
-    if uploaded_file:
+    if uploaded_file2:
         try:
-            file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+            file_extension = os.path.splitext(uploaded_file2.name)[1].lower()
             if file_extension == ".xls":
-                df = pd.read_excel(uploaded_file, engine="xlrd")
+                df = pd.read_excel(uploaded_file2, engine="xlrd")
             elif file_extension == ".xlsm":
-                df = pd.read_excel(uploaded_file, engine="openpyxl")
+                df = pd.read_excel(uploaded_file2, engine="openpyxl")
             else:
-                df = pd.read_excel(uploaded_file)
+                df = pd.read_excel(uploaded_file2)
 
             df.columns = df.columns.map(str)
 
